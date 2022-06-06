@@ -1,12 +1,13 @@
 package com.coditas.ism.demoplayground
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.coditas.ism.demoplayground.databinding.SingleTodoItemBinding
 
 
-class EventListAdapter(private val eventList: ArrayList<Event>) :
+class EventListAdapter(private val eventList: List<Event>) :
     RecyclerView.Adapter<EventListAdapter.MyViewHolder>() {
 
     class MyViewHolder(binding:SingleTodoItemBinding) :
@@ -25,7 +26,8 @@ class EventListAdapter(private val eventList: ArrayList<Event>) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentCategoryPosition = eventList[position]
-        holder.eventWithDate.text = currentCategoryPosition.date +"Event: "+ currentCategoryPosition.title
+        holder.eventWithDate.text = currentCategoryPosition.date +" Event: "+ currentCategoryPosition.title
+        Log.d("TAG Calender","${currentCategoryPosition.date}")
     }
 
     override fun getItemCount(): Int {

@@ -27,33 +27,24 @@ class CalendarView : AppCompatActivity() {
         setContentView(binding.root)
         calendarView = findViewById(R.id.calendarView)
         database= EventDatabase.getDatabase(this)
-
         binding.btnCreateEvent.setOnClickListener {
-
             eventStore = binding.etForEventStored.text.toString()
-            binding.tvForDateSelected.text=date
             //binding.tvForDateSelected.text=date
-
-
             if(date.isNotEmpty() && eventStore.isNotEmpty()){
+
+                binding.tvForDateSelected.text=date
                 GlobalScope.launch {
                     database.eventDao().insertEvent(Event(0,date,eventStore))
-
                 }
                 storeData()
-
-
+                binding.etForEventStored.text.clear()
             }else{
                 Toast.makeText(this,"Please select the date and enter the event",Toast.LENGTH_SHORT).show()
             }
 
         }
-        // on below line we are adding set on
-        // date change listener for calendar view.
         dateSelection()
         storeData()
-
-
     }
 
     private fun dateSelection() {
@@ -73,36 +64,9 @@ class CalendarView : AppCompatActivity() {
 
     private fun storeData(){
          database.eventDao().getEvent().observe( this, Observer {
-             binding.tvForEvent.text=it.toString()
-
-             eventListAdapter = EventListAdapter(it as ArrayList<Event>)
-             Toast.makeText(this,eventListAdapter.toString(),Toast.LENGTH_SHORT).show()
+             eventListAdapter = EventListAdapter(it)
              binding.eventList.adapter = eventListAdapter
 
         })
     }
 }
-//import android.app.Activity
-//import android.widget.CalendarView
-//import android.widget.Toast
-//
-//object CalendarView {
-//    fun genericCalenderView(activity: Activity?){
-//        val calendar= activity?.let { CalendarView(it) }
-//       // val calendarView = calendar?.findViewById<CalendarView>(R.id.calendarView)
-//
-//        calendar
-//            ?.setOnDateChangeListener(
-//                CalendarView.OnDateChangeListener { view, year, month, dayOfMonth ->
-//                    // In this Listener we are getting values
-//                    // such as year, month and day of month
-//                    // on below line we are creating a variable
-//                    // in which we are adding all the cariables in it.
-//                    val Date = (dayOfMonth.toString() + "-"
-//                            + (month + 1) + "-" + year)
-//
-//                    // set this date in TextView for Display
-//                    Toast.makeText(activity,Date,Toast.LENGTH_LONG).show()
-//                })
-//    }
-//}
